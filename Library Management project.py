@@ -171,13 +171,13 @@ def change_availability():
 
     clear_and_display()
 
-lf_bg = 'LightSkyBlue' # Left Frame Background Color
-rtf_bg = 'DeepSkyBlue' # Right Top Frame Background Color
-rbf_bg = 'DodgerBlue' # Right Bottom Frame Background Color
-btn_hlb_bg = 'SteelBlue' # Background color for Head Labels and Buttons
+lf_bg = 'LightSkyBlue' 
+rtf_bg = 'DeepSkyBlue' 
+rbf_bg = 'DodgerBlue' 
+btn_hlb_bg = 'SteelBlue'
 
-lbl_font = ('Georgia', 13) # Font for all labels
-entry_font = ('Times New Roman', 12) # Font for all Entry widgets
+lbl_font = ('Georgia', 13) 
+entry_font = ('Times New Roman', 12)
 btn_font = ('Gill Sans MT', 13)
 
 root = Tk()
