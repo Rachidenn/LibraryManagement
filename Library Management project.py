@@ -1,11 +1,9 @@
-# Importing all necessary modules
 import sqlite3
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as mb
 import tkinter.simpledialog as sd
 
-# Connecting to Database
 connector = sqlite3.connect('library.db')
 cursor = connector.cursor()
 
@@ -13,7 +11,7 @@ connector.execute(
     'CREATE TABLE IF NOT EXISTS Library (BK_NAME TEXT, BK_ID TEXT PRIMARY KEY NOT NULL, AUTHOR_NAME TEXT, BK_STATUS TEXT, CARD_ID TEXT)'
 )
 
-# Function to get issuer card ID
+
 def issuer_card():
     Cid = sd.askstring('Issuer Card ID', 'What is the Issuer\'s Card ID?\t\t\t')
     if not Cid:
@@ -21,7 +19,7 @@ def issuer_card():
     else:
         return Cid
 
-# Function to display records
+
 def display_records():
     global connector, cursor
     global tree
@@ -34,7 +32,7 @@ def display_records():
     for records in data:
         tree.insert('', END, values=records)
 
-# Function to clear input fields
+
 def clear_fields():
     global bk_status, bk_id, bk_name, author_name, card_id
 
@@ -47,12 +45,12 @@ def clear_fields():
     except:
         pass
 
-# Function to clear fields and display records
+
 def clear_and_display():
     clear_fields()
     display_records()
 
-# Function to view selected record
+
 def view_record():
     global bk_name, bk_id, bk_status, author_name, card_id
     global tree
@@ -70,7 +68,7 @@ def view_record():
     bk_status.set(selection[3])
     author_name.set(selection[2])
 
-# Function to add a new record
+
 def add_record():
     global connector
     global bk_name, bk_id, author_name, bk_status
@@ -95,7 +93,7 @@ def add_record():
         except sqlite3.IntegrityError:
             mb.showerror('Book ID already in use!', 'The Book ID you are trying to enter is already in the database, please alter that book\'s record or check any discrepancies on your side')
 
-# Function to update a record
+
 def update_record():
     def update():
         global bk_status, bk_name, bk_id, author_name, card_id
@@ -121,7 +119,7 @@ def update_record():
     edit = Button(left_frame, text='Update Record', font=btn_font, bg=btn_hlb_bg, width=20, command=update)
     edit.place(x=50, y=375)
 
-# Function to remove a record
+
 def remove_record():
     if not tree.selection():
         mb.showerror('Error!', 'Please select an item from the database')
@@ -138,7 +136,7 @@ def remove_record():
     mb.showinfo('Done', 'The record you wanted deleted was successfully deleted.')
     clear_and_display()
 
-# Function to delete the entire inventory
+
 def delete_inventory():
     if mb.askyesno('Are you sure?', 'Are you sure you want to delete the entire inventory?\n\nThis command cannot be reversed'):
         tree.delete(*tree.get_children())
@@ -147,7 +145,7 @@ def delete_inventory():
     else:
         return
 
-# Function to change book availability
+
 def change_availability():
     global card_id, tree, connector
 
@@ -173,7 +171,6 @@ def change_availability():
 
     clear_and_display()
 
-# Variables
 lf_bg = 'LightSkyBlue' # Left Frame Background Color
 rtf_bg = 'DeepSkyBlue' # Right Top Frame Background Color
 rbf_bg = 'DodgerBlue' # Right Bottom Frame Background Color
@@ -183,7 +180,6 @@ lbl_font = ('Georgia', 13) # Font for all labels
 entry_font = ('Times New Roman', 12) # Font for all Entry widgets
 btn_font = ('Gill Sans MT', 13)
 
-# Initializing the main GUI window
 root = Tk()
 root.title('PythonGeeks Library Management System')
 root.geometry('1010x530')
@@ -191,14 +187,12 @@ root.resizable(0, 0)
 
 Label(root, text='LIBRARY MANAGEMENT SYSTEM', font=("Noto Sans CJK TC", 15, 'bold'), bg=btn_hlb_bg, fg='White').pack(side=TOP, fill=X)
 
-# StringVars
 bk_status = StringVar()
 bk_name = StringVar()
 bk_id = StringVar()
 author_name = StringVar()
 card_id = StringVar()
 
-# Frames
 left_frame = Frame(root, bg=lf_bg)
 left_frame.place(x=0, y=30, relwidth=0.3, relheight=0.96)
 
@@ -208,7 +202,6 @@ RT_frame.place(relx=0.3, y=30, relheight=0.2, relwidth=0.7)
 RB_frame = Frame(root)
 RB_frame.place(relx=0.3, rely=0.24, relheight=0.785, relwidth=0.7)
 
-# Left Frame
 Label(left_frame, text='Book Name', bg=lf_bg, font=lbl_font).place(x=98, y=25)
 Entry(left_frame, width=25, font=entry_font, text=bk_name).place(x=45, y=55)
 
@@ -230,12 +223,10 @@ submit.place(x=50, y=375)
 clear = Button(left_frame, text='Clear Fields', font=btn_font, bg=btn_hlb_bg, width=20, command=clear_fields)
 clear.place(x=50, y=425)
 
-# Right Top Frame
 Button(RT_frame, text='Delete entire inventory', font=btn_font, bg=btn_hlb_bg, command=delete_inventory).place(x=50, y=30)
 Button(RT_frame, text='Delete selected record', font=btn_font, bg=btn_hlb_bg, command=remove_record).place(x=315, y=30)
 Button(RT_frame, text='Modify selected record', font=btn_font, bg=btn_hlb_bg, command=update_record).place(x=580, y=30)
 
-# Right Bottom Frame
 Label(RB_frame, text='BOOK RECORDS', bg=rbf_bg, font=lbl_font).pack(side=TOP, fill=X)
 
 tree = ttk.Treeview(RB_frame, selectmode=BROWSE, columns=('Book Name', 'Book ID', 'Author Name', 'Book Status', 'Issuer Card ID'))
@@ -267,6 +258,5 @@ Button(RB_frame, text='Change Book Availability', font=btn_font, bg=btn_hlb_bg, 
 
 display_records()
 
-# Finalizing the GUI window
 root.update()
 root.mainloop()
